@@ -1,0 +1,17 @@
+{
+  "recording": "saved_live_model_responses",
+  "evidence": "fictional",
+  "date": "2026-10-29",
+  "cli_version": "0.157.0",
+  "model": "gpt-6-astra",
+  "provider": "openai",
+  "sandbox_requested_and_reported": "read-only",
+  "fresh_executions": 3,
+  "sha256": {
+    "case.json": "da3ebc0753e240edcdfee8e27b891d1a9693a25257d0a71bb3369d3b7f2c23cc",
+    "champion.json": "d741a3310f68dcd520ab6a87fe6ae7c8f3932e39ea75a03593ed488fd754733e",
+    "skeptic.json": "aee9437ca0f68e7ee9a5ca2cd98521e17d25ee5e6bc9d6af27cdb5af8c016957",
+    "elder.json": "7392c14799c7e8e4253ba02a5e3f54a327ea0509bd742a3999c6b3a1a73f987a",
+    "origin.json": "47b91d7bb1ee603e5e5a0e661f3cf88706bb99c0796e99eb1b4ed87edf50b455"
+  }
+}
