@@ -1,6 +1,6 @@
 # The Council Lab short film
 
-[Watch the 26-second MP4](council-lab-26s.mp4).
+[Watch the 26-second film](https://github.com/user-attachments/assets/dd85ab45-df2a-4346-a42f-a7daa8332a8b) or [download the MP4](council-lab-26s.mp4).
 
 This is an illustrated fictional overview, not a screen recording or a fresh model run. The evidence and questions come from the [library fixture](../examples/library.json). The separately [recorded live example](../examples/recorded-live/README.md) contains the actual saved Codex responses.
 

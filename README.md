@@ -1,6 +1,6 @@
 # Council Lab
 
-[![Council Lab: a librarian compares two paper arguments in a parchment-and-ink library. Watch the 26-second film.](media/council-lab-poster.jpg)](media/council-lab-26s.mp4)
+[![Council Lab: a librarian compares two paper arguments in a parchment-and-ink library. Watch the 26-second film.](media/council-lab-poster.jpg)](https://github.com/user-attachments/assets/dd85ab45-df2a-4346-a42f-a7daa8332a8b)
 
 A library is thinking about setting aside a quiet hour. Some visitors have asked for a quieter place to study, but others need help at the service desk. What should the library try first?
 
@@ -8,7 +8,9 @@ Council Lab lets you examine a small question like this from more than one angle
 
 ## Watch the 26-second overview
 
-[Watch or download the film](media/council-lab-26s.mp4).
+https://github.com/user-attachments/assets/dd85ab45-df2a-4346-a42f-a7daa8332a8b
+
+[Download the MP4](media/council-lab-26s.mp4).
 
 An illustrated fictional example in our Shadow Theatre style: textured parchment, ink figures, moving paper and an original quiet score. On-screen captions carry the explanation. This film illustrates the idea; the saved live Codex responses are [documented separately](examples/recorded-live/README.md). A [text transcript and media notes](media/README.md) are available.
 
