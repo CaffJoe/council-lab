@@ -21,3 +21,5 @@ All three responses passed Council Lab's validation on the first attempt. Their 
 An initial launch failed because the surrounding sandbox denied the CLI access to its local state; the successful runs followed granted access. An MCP connection returned HTTP 403 during startup, but the model calls completed and no MCP capability was needed. Session logs, credentials, and machine-specific data are excluded from this recording.
 
 The [provenance manifest](provenance.json) records the observed configuration and SHA-256 fingerprints of the published case and responses. These fingerprints help detect accidental changes; they are not cryptographic authentication of a model run. The `recorded_live` label records the example's origin and does not alter the evidence, claims, or packet identities.
+
+The recording used the original prompt wrapper. Before publication, review clarified that wrapper by placing each role's task before the untrusted case data. The saved evidence, responses, and packet identities are unchanged; this recording is not evidence of a new run with the revised wrapper.
