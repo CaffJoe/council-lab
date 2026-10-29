@@ -1,6 +1,6 @@
 # Council Lab
 
-[![Council Lab: a librarian compares two paper arguments in a parchment-and-ink library. Watch the 26-second film.](media/council-lab-poster.jpg)](https://github.com/user-attachments/assets/dd85ab45-df2a-4346-a42f-a7daa8332a8b)
+[![Council Lab: a librarian compares two paper arguments in a parchment-and-ink library. Watch the 26-second film.](media/council-lab-poster.jpg)](#watch-the-26-second-overview)
 
 A library is thinking about setting aside a quiet hour. Some visitors have asked for a quieter place to study, but others need help at the service desk. What should the library try first?
 
