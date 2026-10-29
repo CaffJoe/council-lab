@@ -1,6 +1,6 @@
 # Council Lab: one question, three angles
 
-[Play or download the 24-second film](council-lab-24s.mp4).
+[Watch the 24-second film](https://github.com/user-attachments/assets/03b54ea1-a928-4901-b60c-4f5b30677313) or [download the MP4](council-lab-24s.mp4).
 
 This is an editorial animation of the [recorded live Codex example](../examples/recorded-live/README.md). The supporting claim, challenge, eight dispositions, outcome and next-step excerpt come from the actual saved JSON records. They are typeset for the film, rather than shown in a screen recording. The library question and its evidence are fictional. Viewing the film runs no model.
 

@@ -8,6 +8,8 @@ Council Lab lets you examine a small question like this from more than one angle
 
 ## Watch the 24-second overview
 
+https://github.com/user-attachments/assets/03b54ea1-a928-4901-b60c-4f5b30677313
+
 [Play or download the narrated MP4](media/council-lab-24s.mp4).
 
 A narrated editorial animation of the [saved live Codex example](examples/recorded-live/README.md), using verbatim output excerpts and claim-by-claim highlights. The library case and evidence are fictional. The film typesets saved records; it is not a screen recording or a fresh execution. The voiceover is AI-generated. Read the [spoken script and production notes](media/README.md).
