@@ -1,0 +1,49 @@
+{
+  "packet_hash": "411d704b46714ebf8785deff7ee30693884eda0200d85da5b6c1e36dbbdfe7ce",
+  "role": "champion",
+  "result": {
+    "claims": [
+      {
+        "id": "champion-1",
+        "statement": "Staff recorded 12 requests for quieter study space over four Tuesday afternoons.",
+        "evidence": [
+          "E1"
+        ],
+        "inference": "These requests support testing a Tuesday afternoon quiet hour, but do not establish how many distinct people would attend."
+      },
+      {
+        "id": "champion-2",
+        "statement": "A small meeting room with capacity for eight is available on three of the next four Tuesday afternoons.",
+        "evidence": [
+          "E3"
+        ],
+        "inference": "The room offers a possible setting for a limited trial that could preserve ordinary services elsewhere. Its availability does not establish accessibility, adequate capacity, or suitability for quiet study."
+      },
+      {
+        "id": "champion-3",
+        "statement": "The service desk helped 20 people with printing or computer questions during the same four Tuesday afternoons.",
+        "evidence": [
+          "E2"
+        ],
+        "inference": "Existing assistance is actively needed. The strongest case for a quiet-hour trial therefore depends on preserving that help, potentially by locating quiet study in the separate room rather than restricting service-desk conversations."
+      },
+      {
+        "id": "champion-4",
+        "statement": "The packet documents requests for quiet, use of existing assistance, and limited room availability.",
+        "evidence": [
+          "E1",
+          "E2",
+          "E3"
+        ],
+        "inference": "A bounded trial could test whether additional quiet space improves library use while preserving assistance. This supports investigating the proposition, without establishing that it will succeed."
+      }
+    ],
+    "unknowns": [
+      "How many people would attend, and would demand exceed the room's capacity of eight?",
+      "Would the quiet hour make service-desk assistance harder to obtain?",
+      "Would the smaller room meet users' access needs and provide suitable quiet study space?",
+      "How would the trial handle the Tuesday afternoon when the room is unavailable?"
+    ],
+    "falsifier": "The case for the proposed trial would be undermined if it attracted little use, failed to provide useful quiet space, or made existing assistance or accessible library use harder to obtain."
+  }
+}

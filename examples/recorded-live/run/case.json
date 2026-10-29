@@ -1,0 +1,27 @@
+{
+  "title": "A library considers a quieter hour",
+  "aim": "Make the library easier to use without excluding people who need its existing services.",
+  "proposition": "Try a quiet hour on Tuesday afternoons.",
+  "evidence": [
+    {
+      "id": "E1",
+      "source": "Fictional staff tally, four Tuesdays",
+      "text": "Staff noted 12 requests for quieter study space over four Tuesday afternoons."
+    },
+    {
+      "id": "E2",
+      "source": "Fictional service desk notes, same four Tuesdays",
+      "text": "The service desk helped 20 people with printing or computer questions during those hours."
+    },
+    {
+      "id": "E3",
+      "source": "Fictional room schedule",
+      "text": "A small meeting room is free for three of the next four Tuesday afternoons; its capacity is eight."
+    }
+  ],
+  "unknowns": [
+    "How many people would use a quiet hour?",
+    "Would a quiet hour make it harder to get help at the service desk?",
+    "Would the smaller room meet access needs?"
+  ]
+}

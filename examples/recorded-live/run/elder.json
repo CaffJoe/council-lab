@@ -1,0 +1,88 @@
+{
+  "packet_hash": "c628088e0783eac2a474ea01d57bba4f7465a80158e783724f87ba22d6e49f7d",
+  "role": "elder",
+  "result": {
+    "resolutions": [
+      {
+        "claim_id": "champion-1",
+        "disposition": "supported",
+        "reason": "The tally establishes 12 requests, supporting investigation of quieter space without establishing distinct attendees or demand for a specific hour.",
+        "evidence": [
+          "E1"
+        ]
+      },
+      {
+        "claim_id": "champion-2",
+        "disposition": "supported",
+        "reason": "The schedule confirms eight places and availability on three afternoons. A separate-room trial is a plausible option, but its accessibility and ability to preserve services remain unverified.",
+        "evidence": [
+          "E3"
+        ]
+      },
+      {
+        "claim_id": "champion-3",
+        "disposition": "supported",
+        "reason": "Twenty people received assistance. Preserving access to that help follows from the human's aim; the evidence does not establish that a separate room would accomplish this.",
+        "evidence": [
+          "E2"
+        ]
+      },
+      {
+        "claim_id": "champion-4",
+        "disposition": "supported",
+        "reason": "The evidence warrants investigating a bounded trial. It establishes neither successful implementation nor superiority over other ways of providing quieter space.",
+        "evidence": [
+          "E1",
+          "E2",
+          "E3"
+        ]
+      },
+      {
+        "claim_id": "skeptic-1",
+        "disposition": "supported",
+        "reason": "Requests across Tuesday afternoons do not establish attendance at a particular hour or whether scheduled access would best meet those needs.",
+        "evidence": [
+          "E1"
+        ]
+      },
+      {
+        "claim_id": "skeptic-2",
+        "disposition": "supported",
+        "reason": "Existing assistance is documented, while its preservation under a quiet hour is not. Disruption is a plausible risk rather than an observed effect, and the two counts cannot rank competing needs.",
+        "evidence": [
+          "E1",
+          "E2"
+        ]
+      },
+      {
+        "claim_id": "skeptic-3",
+        "disposition": "supported",
+        "reason": "Capacity and partial availability are established. Neither adequate capacity nor a workable, accessible recurring arrangement is established.",
+        "evidence": [
+          "E3"
+        ]
+      },
+      {
+        "claim_id": "skeptic-4",
+        "disposition": "supported",
+        "reason": "The evidence contains no comparison of arrangements. An optional quiet-room trial could inform that specific approach but would not by itself establish the effects of a library-wide quiet hour.",
+        "evidence": [
+          "E1",
+          "E2",
+          "E3"
+        ]
+      }
+    ],
+    "crux": "Can a specified Tuesday quiet-space arrangement meet quiet-study needs while preserving accessible printing and computer assistance?",
+    "uncertainty": [
+      "Whether the proposal means an optional quiet room or a library-wide quiet expectation.",
+      "How many people would attend a specified hour and what access needs they have.",
+      "Whether the room provides suitable quiet space and sufficient capacity.",
+      "Whether service-desk conversations, staffing, and access to assistance would be preserved.",
+      "How excess demand and the unavailable Tuesday would be handled."
+    ],
+    "outcome": "more_observation",
+    "next_step": "Before scheduling a trial, ask staff to define an optional quiet-room arrangement, check prospective users' preferred times and access needs, inspect room suitability, and specify how assistance, excess demand, and the unavailable Tuesday would be handled. Set success and stopping criteria around useful quiet space and preserved access to existing services.",
+    "revisit_when": "Revisit once those checks establish whether a feasible arrangement exists. If a trial subsequently proceeds, reconsider it when attendance, unmet access needs, or difficulty obtaining existing assistance show whether it serves the human's aim."
+  }
+}
