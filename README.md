@@ -1,18 +1,18 @@
 # Council Lab
 
-[![Council Lab: a librarian compares two paper arguments in a parchment-and-ink library. Watch the 26-second film.](media/council-lab-poster.jpg)](#watch-the-26-second-overview)
+[![Council Lab: one question, three angles. A narrated editorial film using saved Codex output.](media/council-lab-poster.jpg)](#watch-the-24-second-overview)
 
 A library is thinking about setting aside a quiet hour. Some visitors have asked for a quieter place to study, but others need help at the service desk. What should the library try first?
 
 Council Lab lets you examine a small question like this from more than one angle. It keeps the supplied evidence visible, asks for a case in favor and a challenge to it, then asks for a judgment that accounts for each claim. The judgment ends with uncertainty and a next step for a person to consider. It does not make the decision or take action.
 
-## Watch the 26-second overview
+## Watch the 24-second overview
 
-https://github.com/user-attachments/assets/dd85ab45-df2a-4346-a42f-a7daa8332a8b
+https://github.com/user-attachments/assets/03b54ea1-a928-4901-b60c-4f5b30677313
 
-[Download the MP4](media/council-lab-26s.mp4).
+[Play or download the narrated MP4](media/council-lab-24s.mp4).
 
-An illustrated fictional example in our Shadow Theatre style: textured parchment, ink figures, moving paper and an original quiet score. On-screen captions carry the explanation. This film illustrates the idea; the saved live Codex responses are [documented separately](examples/recorded-live/README.md). A [text transcript and media notes](media/README.md) are available.
+A narrated editorial animation of the [saved live Codex example](examples/recorded-live/README.md), using verbatim output excerpts and claim-by-claim highlights. The library case and evidence are fictional. The film typesets saved records; it is not a screen recording or a fresh execution. The voiceover is AI-generated. Read the [spoken script and production notes](media/README.md).
 
 ## Try the fictional example
 
@@ -51,7 +51,7 @@ The commands read and write UTF-8 text, including when output is redirected to a
 
 ## How the example works
 
-![Three illustrated frames: start with the evidence, make and challenge a case, then keep the unknowns visible.](media/council-lab-storyboard.jpg)
+![Editorial frames of the actual saved supporting claim, skeptical challenge, and judgment to gather more observations.](media/council-lab-storyboard.jpg)
 
 The case is copied into the new run, and its content receives a fingerprint. Each role gets a packet for that exact case. The supporting role sees the case; the challenging role also sees the accepted supporting record; the judge sees both. A response must match the role and packet fingerprint. Evidence citations must refer to IDs in the case, and the judgment must address each claim once. Accepted response files are created once rather than overwritten by the commands. If you change an earlier input, later records no longer match; begin a new run to keep the old one readable.
 

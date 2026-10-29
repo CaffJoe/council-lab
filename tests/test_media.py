@@ -45,7 +45,9 @@ class MediaTests(unittest.TestCase):
         manifest = json.loads((MEDIA / "manifest.json").read_text(encoding="utf-8"))
         for name, expected in manifest["sha256"].items():
             self.assertEqual(hashlib.sha256((MEDIA / name).read_bytes()).hexdigest(), expected, name)
-        data = (MEDIA / "council-lab-26s.mp4").read_bytes()
+        for name, expected in manifest["recorded_sources"].items():
+            self.assertEqual(hashlib.sha256((MEDIA.parent / name).read_bytes()).hexdigest(), expected, name)
+        data = (MEDIA / manifest["movie"]).read_bytes()
         self.assertLess(len(data), 10_000_000)
         duration = movie_duration(data)
         self.assertIsNotNone(duration)
