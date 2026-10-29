@@ -169,7 +169,7 @@ def frame(time, poster=False):
     canvas = scene(time)
     overlay = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
     draw = ImageDraw.Draw(overlay)
-    line(draw, (350, 66), "COUNCIL LAB  /  A FICTIONAL LIBRARY EXAMPLE", 16, OLIVE)
+    line(draw, (392, 66), "COUNCIL LAB  /  A FICTIONAL LIBRARY EXAMPLE", 16, OLIVE)
     if poster:
         title, subtitle = ["Council Lab"], ["One question.", "More than one angle."]
     elif time < 4:
@@ -184,10 +184,10 @@ def frame(time, poster=False):
         title, subtitle = ["Council Lab"], ["Check access. Ask visitors.", "Then choose what to try."]
     y = 105
     for text in title:
-        line(draw, (348, y), text, 48 if len(text) < 19 else 41, serif=True)
+        line(draw, (390, y), text, 48 if len(text) < 19 else 41, serif=True)
         y += 57
     for text in subtitle:
-        line(draw, (351, y + 10), text, 25)
+        line(draw, (393, y + 10), text, 25)
         y += 31
     draw.rectangle((0, 642, WIDTH, HEIGHT), fill=(20, 23, 16, 247))
     footer = "ILLUSTRATED FICTIONAL EXAMPLE  /  NOT A LIVE CODEX RUN"
