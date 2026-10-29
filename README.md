@@ -37,7 +37,7 @@ The editable case is [examples/library.json](examples/library.json). Copy it to 
 5. Repeat the prompt and submit commands for `skeptic`, using a **fresh chat**, then for `elder`, again using a fresh chat. The skeptic packet includes the accepted supporting case; the elder packet includes both cases.
 6. Run `python lab.py show my-run`. Read the evidence and reasoning, decide whether the uncertainty matters, and choose your own next step.
 
-The commands do not start Codex or verify which model produced a response. They accept operator-supplied JSON only. You can also write responses yourself. The validator checks the structure, packet binding, evidence IDs, and claim accounting; it cannot establish whether a citation actually supports a claim or whether reasoning is sound. Review those yourself. The `inference` field is where a role explains the step beyond the source, not a source itself.
+The commands read and write UTF-8 text, including when output is redirected to a file. They do not start Codex or verify which model produced a response. They accept operator-supplied JSON only. You can also write responses yourself. The validator checks the structure, packet binding, evidence IDs, and claim accounting; it cannot establish whether a citation actually supports a claim or whether reasoning is sound. Review those yourself. The `inference` field is where a role explains the step beyond the source, not a source itself.
 
 ## How the example works
 

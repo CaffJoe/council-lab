@@ -18,6 +18,13 @@ class LabError(ValueError):
     pass
 
 
+def configure_utf8_output():
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure is not None:
+            reconfigure(encoding="utf-8")
+
+
 def canonical(value):
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
 
@@ -220,6 +227,7 @@ def show(run):
 
 
 def main(argv=None):
+    configure_utf8_output()
     parser = argparse.ArgumentParser(description="Examine a fictional case from several angles")
     sub = parser.add_subparsers(dest="command", required=True)
     s = sub.add_parser("start"); s.add_argument("case"); s.add_argument("run")

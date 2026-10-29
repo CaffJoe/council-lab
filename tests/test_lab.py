@@ -1,6 +1,7 @@
 import copy
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -163,6 +164,17 @@ class LabTests(unittest.TestCase):
         self.assertEqual(shown.returncode, 0, shown.stderr)
         self.assertIn("RECORDED LIVE EXAMPLE", shown.stdout)
         self.assertIn("does not run a model", shown.stdout)
+
+    def test_cli_preserves_unicode_when_output_code_page_is_limited(self):
+        case = lab.case_in(self.run)
+        case["title"] = "\u56fe\u4e66\u9986"
+        (self.run / "case.json").write_text(json.dumps(case), encoding="utf-8")
+        environment = dict(os.environ, PYTHONIOENCODING="cp1252")
+        command = [sys.executable, str(ROOT / "lab.py")]
+        for arguments in (["prompt", str(self.run), "champion"], ["show", str(self.run)]):
+            result = subprocess.run(command + arguments, capture_output=True, env=environment)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn(case["title"], result.stdout.decode("utf-8"))
 
 
 if __name__ == "__main__":

@@ -42,6 +42,7 @@ RESPONSES = {
 
 
 def main():
+    lab.configure_utf8_output()
     parser = argparse.ArgumentParser(description="Create a scripted fictional walkthrough")
     parser.add_argument("run", help="A new directory for this walkthrough")
     args = parser.parse_args()
