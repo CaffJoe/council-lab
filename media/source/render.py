@@ -1,269 +1,301 @@
-"""Render Council Lab's 26-second illustrated overview. Optional media tooling only."""
+"""Render an editorial animation of saved output; never call an AI service."""
 import argparse
 from functools import lru_cache
-import math
+import json
 import os
 from pathlib import Path
 import shutil
 import subprocess
 import tempfile
-import wave
 
-import numpy as np
-from PIL import Image, ImageDraw, ImageFont, ImageOps
+from PIL import Image, ImageDraw, ImageFont
 
 MEDIA = Path(__file__).resolve().parents[1]
-WIDTH, HEIGHT, FPS, SECONDS = 1280, 720, 30, 26
-INK = (27, 27, 19, 255)
-PAPER = (237, 220, 169, 255)
-OLIVE = (80, 87, 47, 255)
+ROOT = MEDIA.parent
+EDIT = json.loads((MEDIA / "source/edit.json").read_text(encoding="utf-8"))
+DESIGN = json.loads((MEDIA / "source/design.json").read_text(encoding="utf-8"))
+WIDTH, HEIGHT, FPS = 1280, 720, 30
+SECONDS = EDIT["duration_seconds"]
+PAPER = DESIGN["colors"]["paper"]
+INK = DESIGN["colors"]["ink"]
+SLATE = DESIGN["colors"]["slate"]
+MUTED = DESIGN["colors"]["muted"]
+RULE = DESIGN["colors"]["rule"]
+GOLD = DESIGN["colors"]["gold"]
+GREEN = DESIGN["colors"]["done_foreground"]
+PALE_SLATE = DESIGN["colors"]["slate_surface"]
 
 
-def smooth(value):
-    value = min(1.0, max(0.0, value))
-    return value * value * (3 - 2 * value)
+def record(role):
+    path = ROOT / "examples/recorded-live/run" / (role + ".json")
+    return json.loads(path.read_text(encoding="utf-8"))["result"]
 
 
-def mix(a, b, value):
-    return a + (b - a) * value
+CHAMPION, SKEPTIC, ELDER = (record(role) for role in ("champion", "skeptic", "elder"))
+CLAIMS = CHAMPION["claims"] + SKEPTIC["claims"]
+RESOLUTIONS = {item["claim_id"]: item for item in ELDER["resolutions"]}
 
 
-def font(size, serif=False):
-    windows = Path(os.environ.get("WINDIR", "C:/Windows")) / "Fonts"
-    choices = ([windows / "georgia.ttf", Path("/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf")]
-               if serif else [windows / "calibri.ttf", Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf")])
-    for choice in choices:
-        if choice.exists():
-            return ImageFont.truetype(str(choice), size)
-    raise RuntimeError("Install Georgia/Calibri or DejaVu Serif/Sans to render the film")
+def ease(value):
+    value = min(1, max(0, value))
+    return 1 - (1 - value) ** 3
 
 
 @lru_cache(maxsize=32)
-def typeface(size, serif=False):
-    return font(size, serif)
+def font(size, kind="sans"):
+    windows = Path(os.environ.get("WINDIR", "C:/Windows")) / "Fonts"
+    names = {
+        "sans": [windows / "segoeui.ttf", Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf")],
+        "display": [windows / "seguisb.ttf", Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf")],
+        "serif": [windows / "georgia.ttf", Path("/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf")],
+        "mono": [windows / "consola.ttf", Path("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf")],
+    }
+    for path in names[kind]:
+        if path.is_file():
+            return ImageFont.truetype(str(path), size)
+    raise RuntimeError("Install Segoe UI/Georgia/Consolas or DejaVu fonts")
 
 
-def asset(name, size):
-    original = Image.open(MEDIA / "art" / name).convert("RGBA")
-    bounds = original.getchannel("A").point(lambda value: 255 if value > 128 else 0).getbbox()
-    return original.crop(bounds).resize(size, Image.Resampling.LANCZOS)
+def text(draw, xy, words, size, color=INK, kind="sans"):
+    draw.text(xy, words, font=font(size, kind), fill=color)
 
 
-BACKGROUND = ImageOps.fit(Image.open(MEDIA / "art/library-stage.png").convert("RGBA"), (WIDTH, HEIGHT))
-BODY = asset("librarian.png", (260, 396))
-UPPER = asset("upper-arm.png", (56, 170))
-FOREARM = asset("forearm-hand.png", (206, 46))
+def paragraph(draw, xy, words, width, size=32, color=INK, kind="sans", leading=1.35):
+    x, y = xy
+    line = ""
+    for word in words.split():
+        candidate = (line + " " + word).strip()
+        if line and draw.textlength(candidate, font=font(size, kind)) > width:
+            text(draw, (x, y), line, size, color, kind)
+            y += round(size * leading)
+            line = word
+        else:
+            line = candidate
+    if line:
+        text(draw, (x, y), line, size, color, kind)
+        y += round(size * leading)
+    return y
 
 
-def line(draw, xy, text, size, fill=INK, serif=False):
-    draw.text(xy, text, font=typeface(size, serif), fill=fill, stroke_width=0)
+def source_label(draw, x, y, words, color=SLATE):
+    text(draw, (x + 14, y + 5), words, 18, color, "mono")
 
 
-def limb(canvas, sprite, source_start, source_end, start, end):
-    source_angle = math.atan2(source_end[1] - source_start[1], source_end[0] - source_start[0])
-    angle = math.atan2(end[1] - start[1], end[0] - start[0]) - source_angle
-    rotated = sprite.rotate(-math.degrees(angle), resample=Image.Resampling.BICUBIC, expand=True)
-    dx, dy = source_start[0] - sprite.width / 2, source_start[1] - sprite.height / 2
-    pivot = (rotated.width / 2 + math.cos(angle) * dx - math.sin(angle) * dy,
-             rotated.height / 2 + math.sin(angle) * dx + math.cos(angle) * dy)
-    canvas.alpha_composite(rotated, (round(start[0] - pivot[0]), round(start[1] - pivot[1])))
+def base(dark=False):
+    canvas = Image.new("RGB", (WIDTH, HEIGHT), INK if dark else PAPER)
+    draw = ImageDraw.Draw(canvas)
+    color = PAPER if dark else INK
+    for index, height in enumerate((11, 19, 27)):
+        x = 72 + index * 10
+        draw.rectangle((x, 67 - height, x + 5, 67), fill=GOLD)
+    text(draw, (116, 36), "Council Lab", 26, color, "serif")
+    text(draw, (673, 46), "SAVED CODEX OUTPUT  /  FICTIONAL CASE", 16,
+         RULE if dark else MUTED, "mono")
+    draw.line((72, 91, 1208, 91), fill="#394752" if dark else RULE, width=1)
+    return canvas, draw
 
 
-def arm(canvas, shoulder, hand):
-    dx, dy = hand[0] - shoulder[0], hand[1] - shoulder[1]
-    distance = math.hypot(dx, dy)
-    upper, lower = 130.0, 186.0
-    if not abs(upper - lower) < distance < upper + lower:
-        raise ValueError("Hand target is outside the articulated arm's reach")
-    along = (upper * upper - lower * lower + distance * distance) / (2 * distance)
-    height = math.sqrt(max(0, upper * upper - along * along))
-    elbow = (shoulder[0] + along * dx / distance + height * dy / distance,
-             shoulder[1] + along * dy / distance - height * dx / distance)
-    limb(canvas, UPPER, (28, 20), (28, 150), shoulder, elbow)
-    limb(canvas, FOREARM, (196, 23), (10, 23), elbow, hand)
+def record_excerpt(canvas, x, y, role, tag, quote, evidence=None, color=SLATE):
+    """Typeset verbatim saved fields, rather than simulate an application UI."""
+    draw = ImageDraw.Draw(canvas)
+    width, height = 588, 390
+    text(draw, (x + 32, y + 25), role + ".json", 19, MUTED, "mono")
+    draw.line((x + 32, y + 65, x + width - 32, y + 65), fill=RULE)
+    source_label(draw, x + 18, y + 87, tag, color)
+    bottom = paragraph(draw, (x + 32, y + 145), quote, width - 64, size=31)
+    if bottom > y + height - 52:
+        raise ValueError("Recorded excerpt does not fit its document panel")
+    if evidence:
+        text(draw, (x + 32, y + height - 42), "evidence: " + ", ".join(evidence), 18, color, "mono")
 
 
-@lru_cache(maxsize=12)
-def paper(kind, side):
-    sheet = Image.new("RGBA", (192, 152), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(sheet)
-    draw.polygon([(7, 7), (184, 3), (188, 143), (3, 147)], fill=PAPER, outline=INK, width=2)
-    line(draw, (17, 15), {"evidence": "E1" if side == 0 else "E2", "argument": "A CASE FOR" if side == 0 else "A CHALLENGE", "unknown": "STILL UNKNOWN", "next": "A HUMAN CHECK"}[kind], 13, OLIVE)
-    if kind == "evidence":
-        line(draw, (17, 34), "12" if side == 0 else "20", 51, serif=True)
-        line(draw, (18, 96), "requests for quiet" if side == 0 else "people needed help", 18)
-    else:
-        words = {
-            ("argument", 0): ["Could one", "room help?"],
-            ("argument", 1): ["Who might", "lose access?"],
-            ("unknown", 0): ["Demand?", "Room access?"],
-            ("unknown", 1): ["Can ordinary", "help continue?"],
-            ("next", 0): ["Check", "access."],
-            ("next", 1): ["Ask", "visitors."],
-        }[(kind, side)]
-        for index, text in enumerate(words):
-            line(draw, (17, 48 + index * 31), text, 25, serif=True)
-    return sheet
-
-
-def card(canvas, center, kind, side, angle=0, paint=True, fold=1.0):
-    sheet = paper(kind, side)
-    sheet = sheet.resize((max(8, round(sheet.width * fold)), sheet.height), Image.Resampling.LANCZOS)
-    theta = -math.radians(angle)
-    # Turn around the held edge so the fingertip stays on the paper throughout a flip.
-    hinge_shift = 86 * (1 - fold)
-    center = (center[0] + math.cos(theta) * hinge_shift,
-              center[1] + math.sin(theta) * hinge_shift)
-    tilted = sheet.rotate(angle, resample=Image.Resampling.BICUBIC, expand=True)
-    position = (round(center[0] - tilted.width / 2), round(center[1] - tilted.height / 2))
-    # A fingertip remains attached to the upper-right paper edge during movement.
-    grip_dx, grip_dy = 86 * fold, -35
-    grip = (center[0] + math.cos(theta) * grip_dx - math.sin(theta) * grip_dy,
-            center[1] + math.sin(theta) * grip_dx + math.cos(theta) * grip_dy)
-    if not paint:
-        return grip
-    shadow = Image.new("RGBA", tilted.size, (0, 0, 0, 0))
-    shadow.putalpha(tilted.getchannel("A").point(lambda value: value // 4))
-    canvas.alpha_composite(shadow, (position[0] + 4, position[1] + 6))
-    canvas.alpha_composite(tilted, position)
-    return grip
-
-
-def scene(time):
-    canvas = BACKGROUND.copy()
-    canvas.alpha_composite(BODY, (1000, 146))
-    # The original counter occludes the waist; the sleeves and papers perform above it.
-    foreground = BACKGROUND.crop((0, 544, WIDTH, HEIGHT))
-    canvas.alpha_composite(foreground, (0, 544))
-    left_lift = smooth((time - 3.7) / 2.1)
-    right_lift = smooth((time - 6.2) / 1.8)
-    kind = "evidence" if time < 9.35 else "argument" if time < 15.35 else "unknown" if time < 20.85 else "next"
-    fold = 1.0
-    for turn in (9, 15, 20.5):
-        if turn <= time <= turn + 0.7:
-            fold = max(0.04, abs(math.cos(math.pi * (time - turn) / 0.7)))
-    compare = smooth((time - 9) / 1.4) * (1 - smooth((time - 15) / 1.4))
-    place = smooth((time - 22) / 1.8)
-    centers = [(mix(830, 695, left_lift), mix(552, 455, left_lift) + 38 * place),
-               (mix(1020, 927, right_lift), mix(552, 455, right_lift) + 38 * place)]
-    centers = [(centers[0][0] + 28 * compare, centers[0][1] - 10 * compare),
-               (centers[1][0] - 10 * compare, centers[1][1] - 10 * compare)]
-    left_hand, right_hand = (910, 517), (1110, 517)
-    if time >= 3.7:
-        left_hand = card(canvas, centers[0], kind, 0, 3 * left_lift, paint=False, fold=fold)
-    if time >= 6.2:
-        right_hand = card(canvas, centers[1], kind, 1, -3 * right_lift, paint=False, fold=fold)
-    arm(canvas, (1028, 383), left_hand)
-    arm(canvas, (1205, 383), right_hand)
-    if time >= 3.7:
-        card(canvas, centers[0], kind, 0, 3 * left_lift, fold=fold)
-    if time >= 6.2:
-        card(canvas, centers[1], kind, 1, -3 * right_lift, fold=fold)
-    # Match cuts between the same actions keep the stage grounded.
-    if 9 <= time < 20.5:
-        canvas = canvas.crop((64, 36, WIDTH, HEIGHT)).resize((WIDTH, HEIGHT), Image.Resampling.LANCZOS)
+def question(local):
+    canvas, draw = base()
+    p = ease(local / 0.85)
+    x = round(72 - 40 * (1 - p))
+    text(draw, (x, 147), "A quieter", 79, kind="display")
+    text(draw, (x, 244), "hour?", 91, SLATE, "display")
+    text(draw, (76, 411), "One question.", 29)
+    text(draw, (76, 453), "More than one angle.", 29)
+    x, y = 659, round(162 + 35 * (1 - p))
+    text(draw, (x, y), "THE SUPPLIED EVIDENCE", 18, MUTED, "mono")
+    for row, (number, label, source) in enumerate((
+        ("12", "requests for quieter space", "E1"),
+        ("20", "people helped at the desk", "E2"),
+    )):
+        top = y + 65 + row * 145
+        draw.line((x, top, 1208, top), fill=RULE)
+        text(draw, (x, top + 9), number, 76, SLATE, "display")
+        text(draw, (x + 139, top + 28), label, 24)
+        source_label(draw, x + 125, top + 70, source)
+    text(draw, (x, y + 363), "Same four Tuesdays. Fictional tallies.", 19, MUTED)
     return canvas
 
 
-def frame(time, poster=False):
-    canvas = scene(time)
-    overlay = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
-    draw = ImageDraw.Draw(overlay)
-    line(draw, (392, 66), "COUNCIL LAB  /  A FICTIONAL LIBRARY EXAMPLE", 16, OLIVE)
-    if poster:
-        title, subtitle = ["Council Lab"], ["One question.", "More than one angle."]
-    elif time < 4:
-        title, subtitle = ["A quieter hour?"], ["How could a library help more people?"]
-    elif time < 9:
-        title, subtitle = ["Start with", "the evidence."], ["Two tallies. The same four Tuesdays."]
-    elif time < 15:
-        title, subtitle = ["Make a case.", "Challenge it."], ["Two angles on the same question."]
-    elif time < 20.5:
-        title, subtitle = ["Keep the unknowns", "visible."], ["Demand. Access. Existing help."]
-    else:
-        title, subtitle = ["Council Lab"], ["Check access. Ask visitors.", "Then choose what to try."]
-    y = 105
-    for text in title:
-        line(draw, (390, y), text, 48 if len(text) < 19 else 41, serif=True)
-        y += 57
-    for text in subtitle:
-        line(draw, (393, y + 10), text, 25)
-        y += 31
-    draw.rectangle((0, 642, WIDTH, HEIGHT), fill=(20, 23, 16, 247))
-    footer = "ILLUSTRATED FICTIONAL EXAMPLE  /  NOT A LIVE CODEX RUN"
-    line(draw, (38, 686), footer, 14, PAPER)
-    if poster:
-        draw.ellipse((1110, 560, 1182, 632), fill=PAPER, outline=INK, width=2)
-        draw.polygon([(1140, 580), (1140, 611), (1162, 595)], fill=INK)
-        line(draw, (38, 653), "WATCH THE 26-SECOND FILM", 20, PAPER)
-    elif time >= 20.5:
-        line(draw, (38, 653), "Try the example. Change the question.   github.com/CaffJoe/council-lab", 23, PAPER)
-    else:
-        caption = ("A practical question. More than one angle." if time < 4 else
-                   "Keep sources attached to what is claimed." if time < 9 else
-                   "The challenge responds to the actual supporting case." if time < 15 else
-                   "A useful judgment says what remains uncertain.")
-        line(draw, (38, 653), caption, 23, PAPER)
-    canvas = Image.alpha_composite(canvas, overlay).convert("RGB")
-    if time < 0.35:
-        canvas = Image.blend(Image.new("RGB", canvas.size, (20, 23, 16)), canvas, smooth(time / 0.35))
+def argument(local, challenge=False):
+    canvas, draw = base()
+    p = ease(local / 0.7)
+    role = "skeptic" if challenge else "champion"
+    claim = (SKEPTIC if challenge else CHAMPION)["claims"][0]
+    color = INK if challenge else SLATE
+    text(draw, (72, 147), "02" if challenge else "01", 19, color, "mono")
+    text(draw, (72, 209), "Then" if challenge else "Make", 75, kind="display")
+    text(draw, (72, 296), "challenge it." if challenge else "a case.", 66, color, "display")
+    text(draw, (76, 454), "SKEPTIC" if challenge else "CHAMPION", 19, MUTED, "mono")
+    draw.line((76, 500, 505, 500), fill=RULE, width=2)
+    end = round(76 + 429 * ease((local - 0.25) / 0.8))
+    draw.line((76, 500, end, 500), fill=color, width=3)
+    record_excerpt(canvas, round(620 + 65 * (1 - p)), 170, role,
+             claim["id"], claim["statement"], claim["evidence"], color)
     return canvas
 
 
-def soundtrack(path):
-    rate = 48000
-    times = np.arange(rate * SECONDS, dtype=np.float64) / rate
-    sound = np.zeros_like(times)
-    for at, note in [(0.3, 146.83), (4, 196.0), (9, 174.61), (15, 130.81), (20.5, 196.0), (23, 293.66)]:
-        age = np.maximum(0, times - at)
-        envelope = (times >= at) * (1 - np.exp(-age * 9)) * np.exp(-age / 2.4)
-        sound += envelope * (np.sin(2 * np.pi * note * age) + 0.18 * np.sin(2 * np.pi * note * 2 * age)) * 0.07
-    sound *= np.minimum(1, np.maximum(0, (SECONDS - times) / 1.4))
-    stereo = np.column_stack((sound, sound * 0.97))
-    samples = np.clip(stereo * 32767, -32768, 32767).astype("<i2")
-    with wave.open(str(path), "wb") as output:
-        output.setnchannels(2)
-        output.setsampwidth(2)
-        output.setframerate(rate)
-        output.writeframes(samples.tobytes())
+def judgment(local):
+    canvas, draw = base()
+    text(draw, (72, 143), "03  /  ELDER", 19, SLATE, "mono")
+    text(draw, (72, 206), "Every claim,", 73, kind="display")
+    text(draw, (72, 291), "accounted for.", 66, SLATE, "display")
+    text(draw, (76, 441), "8 CLAIMS  /  8 RESOLUTIONS", 19, MUTED, "mono")
+    # Each row is backed by the saved elder record, including its actual disposition.
+    for index, claim in enumerate(CLAIMS):
+        x, y = 672, 142 + 61 * index
+        progress = ease((local - index * 0.13) / 0.45)
+        draw.line((x, y + 50, 1208, y + 50), fill=RULE)
+        text(draw, (x, y + 9), claim["id"], 23, INK, "mono")
+        if progress > 0:
+            end = round(x + 536 * progress)
+            draw.line((x, y + 50, end, y + 50), fill=GREEN, width=2)
+            if progress > 0.7:
+                source_label(draw, x + 337, y + 4, RESOLUTIONS[claim["id"]]["disposition"], GREEN)
+    return canvas
+
+
+def outcome(local):
+    canvas, draw = base()
+    text(draw, (72, 143), "THE SAVED JUDGMENT", 19, SLATE, "mono")
+    text(draw, (72, 205), "More", 85, kind="display")
+    text(draw, (72, 302), "observation.", 75, SLATE, "display")
+    source_label(draw, 62, 440, ELDER["outcome"])
+    x = round(647 + 45 * (1 - ease(local / 0.65)))
+    text(draw, (x, 158), "BEFORE A TRIAL", 19, MUTED, "mono")
+    for index, (heading, field) in enumerate((
+        ("Demand", "preferred times"),
+        ("Access", "access needs"),
+        ("Existing help", "assistance"),
+    )):
+        if field not in ELDER["next_step"]:
+            raise ValueError("Judgment summary no longer matches the saved next step")
+        y = 230 + index * 110
+        draw.line((x, y + 82, 1208, y + 82), fill=RULE)
+        text(draw, (x, y), "0" + str(index + 1), 20, SLATE, "mono")
+        text(draw, (x + 72, y - 8), heading, 40, kind="display")
+    return canvas
+
+
+def human(local):
+    canvas, draw = base(dark=True)
+    p = ease(local / 0.8)
+    text(draw, (72, round(171 + 22 * (1 - p))), "A person", 85, PAPER, "display")
+    text(draw, (72, round(272 + 22 * (1 - p))), "chooses.", 98, PALE_SLATE, "display")
+    text(draw, (78, 480), "The next step stays human.", 28, PAPER)
+    # The source is a visible next_step excerpt, not a second narration track.
+    x = 735
+    text(draw, (x, 177), "elder.json", 18, RULE, "mono")
+    draw.line((x, 220, 1208, 220), fill="#46535E")
+    text(draw, (x, 248), "next_step", 20, PALE_SLATE, "mono")
+    excerpt = EDIT["next_step_excerpt"]
+    if excerpt not in ELDER["next_step"]:
+        raise ValueError("Next-step excerpt must be verbatim saved output")
+    paragraph(draw, (x, 300), excerpt, 473, 30, PAPER)
+    return canvas
+
+
+SCENES = (question, argument, lambda t: argument(t, True), judgment, outcome, human)
+
+
+def frame(time):
+    for index, cut in enumerate(EDIT["cuts"]):
+        if time < cut["end"] or index == len(SCENES) - 1:
+            return SCENES[index](max(0, time - cut["start"]))
+    raise ValueError("Timeline does not cover this frame")
+
+
+def stills():
+    canvas, draw = base()
+    text(draw, (72, 149), "One question.", 74, kind="display")
+    text(draw, (72, 239), "Three angles.", 73, SLATE, "display")
+    text(draw, (78, 409), "Evidence. Challenge. Judgment.", 26)
+    text(draw, (78, 456), "A narrated look at saved Codex output.", 23, MUTED)
+    record_excerpt(canvas, 620, 170, "champion", CHAMPION["claims"][0]["id"],
+             CHAMPION["claims"][0]["statement"], ["E1"])
+    canvas.save(MEDIA / "council-lab-poster.jpg", quality=94, subsampling=0)
+    sheet = Image.new("RGB", (WIDTH * 3, HEIGHT), PAPER)
+    for index, time in enumerate((4.8, 7.8, 14.5)):
+        sheet.paste(frame(time), (WIDTH * index, 0))
+    sheet.resize((1920, 360), Image.Resampling.LANCZOS).save(
+        MEDIA / "council-lab-storyboard.jpg", quality=92, subsampling=0)
+    for time in EDIT["review_keyframes"]:
+        frame(time).save(MEDIA / ("review-" + str(time).replace(".", "-") + ".jpg"), quality=92)
+
+
+def audio_filter(ffmpeg):
+    source = MEDIA / "audio/narration-original.mp3"
+    measure = subprocess.run(
+        [ffmpeg, "-hide_banner", "-i", str(source), "-af",
+         "loudnorm=I=-16:TP=-1.5:LRA=7:print_format=json", "-f", "null", "-"],
+        capture_output=True, text=True, check=True,
+    )
+    stats, _ = json.JSONDecoder().raw_decode(measure.stderr[measure.stderr.rfind("{"):])
+    normalization = (
+        "loudnorm=I=-16:TP=-1.5:LRA=7:"
+        f"measured_I={stats['input_i']}:measured_TP={stats['input_tp']}:"
+        f"measured_LRA={stats['input_lra']}:measured_thresh={stats['input_thresh']}:"
+        f"offset={stats['target_offset']}:linear=true"
+    )
+    return normalization + f",adelay={round(EDIT['narration_start_seconds'] * 1000)},apad"
+
+
+def render(ffmpeg):
+    voice = MEDIA / "audio/narration-original.mp3"
+    filters = audio_filter(ffmpeg)
+    with tempfile.TemporaryDirectory(prefix=".render-", dir=MEDIA) as folder:
+        target = Path(folder) / "film.mp4"
+        args = [
+            ffmpeg, "-y", "-loglevel", "error", "-f", "rawvideo", "-pixel_format",
+            "rgb24", "-video_size", f"{WIDTH}x{HEIGHT}", "-framerate", str(FPS),
+            "-i", "pipe:0", "-i", str(voice), "-map", "0:v:0", "-map", "1:a:0",
+            "-c:v", "libx264", "-preset", "medium", "-crf", "19", "-pix_fmt", "yuv420p",
+            "-af", filters, "-ar", "48000", "-ac", "2", "-c:a", "aac", "-b:a", "160k",
+            "-t", str(SECONDS), "-map_metadata", "-1", "-movflags", "+faststart", str(target),
+        ]
+        process = subprocess.Popen(args, stdin=subprocess.PIPE)
+        try:
+            for number in range(round(FPS * SECONDS)):
+                process.stdin.write(frame(number / FPS).tobytes())
+                if number % 120 == 0:
+                    print(f"Rendered {number}/{round(FPS * SECONDS)} frames", flush=True)
+            process.stdin.close()
+            if process.wait() != 0:
+                raise RuntimeError("FFmpeg did not encode the film successfully")
+            os.replace(target, MEDIA / EDIT["movie"])
+        finally:
+            if process.poll() is None:
+                process.kill()
+                process.wait()
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--ffmpeg")
     parser.add_argument("--stills-only", action="store_true")
-    parser.add_argument("--ffmpeg", help="Path to ffmpeg, otherwise use PATH or imageio-ffmpeg")
     args = parser.parse_args()
-    frame(11, poster=True).save(MEDIA / "council-lab-poster.jpg", quality=94)
-    strip = Image.new("RGB", (1280, 240), (20, 23, 16))
-    for index, at in enumerate((7.8, 12, 18)):
-        still = frame(at).resize((426, 240), Image.Resampling.LANCZOS)
-        strip.paste(still, (index * 427, 0))
-    strip.save(MEDIA / "council-lab-storyboard.jpg", quality=94)
-    for at in (0.6, 4.4, 6.2, 8, 12, 18, 23, 25.9):
-        frame(at).save(MEDIA / f"review-{str(at).replace('.', '-')}.jpg", quality=88)
-    if args.stills_only:
-        return
-    binary = args.ffmpeg or shutil.which("ffmpeg")
-    if not binary:
-        import imageio_ffmpeg
-        binary = imageio_ffmpeg.get_ffmpeg_exe()
-    with tempfile.TemporaryDirectory(dir=MEDIA, prefix=".render-") as temporary:
-        audio = Path(temporary) / "original-score.wav"
-        rendered = Path(temporary) / "film.mp4"
-        soundtrack(audio)
-        command = [binary, "-y", "-f", "rawvideo", "-pixel_format", "rgb24", "-video_size", f"{WIDTH}x{HEIGHT}",
-                   "-framerate", str(FPS), "-i", "pipe:0", "-i", str(audio), "-c:v", "libx264", "-crf", "21",
-                   "-preset", "medium", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k", "-t", str(SECONDS),
-                   "-movflags", "+faststart", str(rendered)]
-        with subprocess.Popen(command, stdin=subprocess.PIPE) as process:
-            for number in range(FPS * SECONDS):
-                process.stdin.write(frame(number / FPS).tobytes())
-                if number % (FPS * 5) == 0:
-                    print(f"Rendered {number // FPS}/{SECONDS} seconds", flush=True)
-            process.stdin.close()
-            if process.wait() != 0:
-                raise RuntimeError("ffmpeg failed")
-        rendered.replace(MEDIA / "council-lab-26s.mp4")
+    stills()
+    if not args.stills_only:
+        ffmpeg = args.ffmpeg or shutil.which("ffmpeg")
+        if not ffmpeg:
+            import imageio_ffmpeg
+            ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
+        render(ffmpeg)
 
 
 if __name__ == "__main__":

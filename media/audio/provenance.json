@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-29",
+  "provider": "ElevenLabs",
+  "generation_method": "Signed-in Text to Speech web app; one new take for this film",
+  "voice": "Alice - Gentle Storyteller",
+  "model": "Eleven Multilingual v2",
+  "ai_generated_voice": true,
+  "settings_observed_before_generation": {
+    "speed": 1.05,
+    "stability": 0.5,
+    "similarity": 0.75,
+    "style_exaggeration": 0,
+    "speaker_boost": true
+  },
+  "input": "Should a library try a quiet hour? Council Lab keeps the evidence visible while a supporting case meets a challenge. This saved Codex run addresses all eight claims. The outcome is more observation: check demand, access, and existing help. The case is fictional. A person chooses what happens next.",
+  "input_sha256": "d716bce1c45840356f4330f2ba7780e7762c7582d6f00fc19f2d064f2167953f",
+  "source": "narration-original.mp3",
+  "source_sha256": "f77d5edd99427e20d5a6e54280b60e7355455657ba590ae072da02f88ba8fd65",
+  "source_duration_seconds": 20.9240625,
+  "source_sample_rate": 44100,
+  "source_channels": 1,
+  "film_start_seconds": 0.65,
+  "finishing": "Two-pass loudness normalization, 0.65-second lead, tail silence, AAC encoding. No speed change or speech truncation."
+}

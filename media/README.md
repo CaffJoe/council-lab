@@ -1,34 +1,39 @@
-# The Council Lab short film
+# Council Lab: one question, three angles
 
-[Watch the 26-second film](https://github.com/user-attachments/assets/dd85ab45-df2a-4346-a42f-a7daa8332a8b) or [download the MP4](council-lab-26s.mp4).
+[Play or download the 24-second film](council-lab-24s.mp4).
 
-This is an illustrated fictional overview, not a screen recording or a fresh model run. The evidence and questions come from the [library fixture](../examples/library.json). The separately [recorded live example](../examples/recorded-live/README.md) contains the actual saved Codex responses.
+This is an editorial animation of the [recorded live Codex example](../examples/recorded-live/README.md). The supporting claim, challenge, eight dispositions, outcome and next-step excerpt come from the actual saved JSON records. They are typeset for the film, rather than shown in a screen recording. The library question and its evidence are fictional. Viewing the film runs no model.
 
-The visual direction adapts our Shadow Theatre production style: ink cutouts, parchment texture, muted olive-gold light, articulated sleeves and hands, and paper props that remain attached to their hand targets. The librarian raises two evidence sheets, compares the supporting and challenging questions, then lowers two concrete next checks. There is no voiceover. On-screen words carry the meaning, accompanied by a short original synthesized score.
+## Spoken script
 
-## Text transcript
+> Should a library try a quiet hour? Council Lab keeps the evidence visible while a supporting case meets a challenge. This saved Codex run addresses all eight claims. The outcome is more observation: check demand, access, and existing help. The case is fictional. A person chooses what happens next.
 
-| Time | On-screen explanation and action |
+The voiceover is AI-generated with ElevenLabs, using Alice – Gentle Storyteller and Eleven Multilingual v2. A new take was made for this film. It is the only soundtrack: there is no music, subtitle track or promotional footer. The original source export is [audio/narration-original.mp3](audio/narration-original.mp3). Production settings and the source fingerprint are in [audio/provenance.json](audio/provenance.json).
+
+## Editorial sequence
+
+| Film time | Picture |
 | --- | --- |
-| 0–4 seconds | **A quieter hour?** How could a library help more people? A librarian considers the question at a service desk. |
-| 4–9 seconds | **Start with the evidence.** Two tallies, the same four Tuesdays: 12 requests for quiet; 20 people needed help. The librarian lifts the two sheets. |
-| 9–15 seconds | **Make a case. Challenge it.** Could one room help? Who might lose access? The challenge responds to the actual supporting case. |
-| 15–20.5 seconds | **Keep the unknowns visible.** Demand, room access, and whether ordinary help can continue. A useful judgment says what remains uncertain. |
-| 20.5–26 seconds | **Council Lab.** Check access. Ask visitors. Then choose what to try. Try the example; change the question. |
+| 0–3.4 seconds | The quiet-hour question and the fictional evidence tallies: 12 requests for quieter space and 20 people helped, over the same four Tuesdays. The counts do not rank competing needs. |
+| 3.4–6.9 seconds | Verbatim `champion-1` statement with its E1 reference. |
+| 6.9–9.45 seconds | Verbatim `skeptic-1` statement challenging what those requests establish. |
+| 9.45–12.2 seconds | All eight saved claim IDs and their actual dispositions. “Supported” is the recorded judgment, not independent proof that a claim is true. |
+| 12.2–17.6 seconds | The saved `more_observation` outcome. Demand, access and existing help summarize checks in the saved next step. |
+| 17.6–24 seconds | The person keeps the decision, beside a verbatim excerpt from the saved next step. |
 
-The film continuously identifies itself as an illustrated fictional example. No model is run by viewing it. The introductory fade lasts 0.35 seconds; there are no flashing effects.
+This example does not establish that the workflow improves decisions. The [recorded-example notes](../examples/recorded-live/README.md) retain the execution date, prompt-wrapper boundary, saved responses and validation results.
 
-## Artwork and reproduction
+## Reproduction
 
-Four new raster assets were generated with built-in ImageGen for this public edition. The original private film's artwork, characters, audio and project data are not redistributed. The exact generation prompts are in [source/image-prompts.json](source/image-prompts.json). The editable [renderer](source/render.py) composes the generated layers, captions, paper actions and original score. Microsoft Georgia and Calibri were used for the rendered lettering; font files are not included. DejaVu Serif and Sans can be used by the renderer on Linux, with slightly different metrics.
+The optional [renderer](source/render.py) draws the typography, output excerpts and animated highlights directly from the saved records. The [edit](source/edit.json) contains the spoken script, timing and excerpt. The [design reference](source/design.json) adapts Yrael System Lab's warm paper, charcoal, slate and restrained typography. Excerpts sit openly on the canvas, with no card borders or shadows. Segoe UI is used for body and display lettering, Georgia only for the wordmark, and Consolas for identifiers; font files are not redistributed. There are no generated illustration assets. The renderer can use DejaVu fonts on Linux, with different metrics.
 
-The application retains its standard-library-only setup. Re-rendering this optional media uses Python 3.13, Pillow, NumPy and imageio-ffmpeg:
+The application retains its standard-library-only setup. Re-rendering this media uses Python 3.13 and two optional packages:
 
 ```text
 python -m pip install -r media/source/requirements.txt
 python media/source/render.py
 ```
 
-You can pass `--ffmpeg /path/to/ffmpeg` to use an installed encoder, or `--stills-only` to produce only the poster, storyboard and local review frames. Review stills are ignored by Git. The script does not call a model or require an API key; regenerating the source artwork is a separate creative action.
+Pass `--ffmpeg /path/to/ffmpeg` to use an installed encoder, or `--stills-only` to render just the poster, storyboard and local review frames. Reproduction uses the checked-in voice recording and makes no network request, AI call or credential lookup. Review stills and temporary rendering directories are ignored by Git.
 
-The checked-in film is H.264 with AAC audio, 1280×720, 30 fps, 780 frames, and 26.0 seconds. Full video and audio decoding passed. The [media manifest](manifest.json) records file fingerprints and production facts. The repository's MIT license covers the newly authored media and renderer; optional tooling and fonts retain their own licenses.
+The film is H.264/AAC, 1280×720, 30 fps and 24.0 seconds. The narration starts 0.65 seconds into the film, is normalized before encoding, and finishes before the final hold. No speech is cut to meet the limit. The [manifest](manifest.json) fingerprints the film, source audio, renderer and original recorded inputs.

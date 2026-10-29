@@ -1,0 +1,20 @@
+{
+  "reference": "https://yrael-system-lab.caffjoe.chatgpt.site/",
+  "reference_section": "Foundations, inspected 2026-10-29",
+  "approach": "Open editorial canvas; no card borders, fills, shadows or accent rails",
+  "colors": {
+    "paper": "#f1ebdc",
+    "ink": "#292a2b",
+    "slate": "#38495d",
+    "muted": "#5f5a50",
+    "rule": "#c4bdad",
+    "gold": "#fdcd65",
+    "done_foreground": "#3b5f45",
+    "slate_surface": "#dae0e8"
+  },
+  "typography": {
+    "reference": "Inter preferred with system sans fallback; Georgia only for the wordmark",
+    "rendered": "Segoe UI body and semibold display, Consolas metadata, Georgia wordmark",
+    "layout": "A shared baseline grid and whitespace separate the source excerpt from the narrative"
+  }
+}
