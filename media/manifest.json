@@ -1,0 +1,39 @@
+{
+  "title": "Council Lab illustrated overview",
+  "date": "2026-10-29",
+  "classification": "illustrated_fictional_overview",
+  "fresh_model_run": false,
+  "duration_seconds": 26.0,
+  "width": 1280,
+  "height": 720,
+  "fps": 30,
+  "frames": 780,
+  "video_codec": "h264",
+  "audio_codec": "aac",
+  "audio_sample_rate": 48000,
+  "audio_origin": "original locally synthesized score; no voiceover",
+  "image_origin": "four original built-in ImageGen assets",
+  "full_decode_exit_code": 0,
+  "reviewed_keyframe_seconds": [
+    0.6,
+    4.4,
+    6.2,
+    8,
+    12,
+    18,
+    23,
+    25.9
+  ],
+  "sha256": {
+    "council-lab-26s.mp4": "022de8f46d2406d03d50b5cb1d9aea900d3019eabe71de203b8bc9abd9ddb3fb",
+    "council-lab-poster.jpg": "8065d1b71761734dad254b7fb3616f1b6c6b5ae8d8c81ed67c3e29071122c535",
+    "council-lab-storyboard.jpg": "8b894a3334354373f6cd1db2c2a97635508fa485a9628830bd9d8dab7211a603",
+    "art/library-stage.png": "92f2544eb6ba71ca7d4f64eca0bb1cb1b41fba3b0ef15d7af22e1059cbbab775",
+    "art/librarian.png": "d261ef3fd35250db5c4f641ada9504f97ed24d80ff65447d63cc5d228aeace18",
+    "art/upper-arm.png": "3cfbe1eab84aa74c00f72c794bb13b80321ce1addf64c4a8f8e68899bd4d6fb2",
+    "art/forearm-hand.png": "f06680e711961208c9045b63d811aea2b79d547f54bdbe5b4de9ca33cb8a0910",
+    "source/render.py": "ec2d87a880742696645b57b250c9ac4b79aa290ee5d14c3467d159459b7dcfc4",
+    "source/image-prompts.json": "b28db4d1b8c617e049489a16ae914c58d1190edf63f63e7b4bcdef0bc8855f12",
+    "source/requirements.txt": "d782ec6ddf8fe2076c396a8ee86653a5e32874c20506dd3798269f735d057b55"
+  }
+}
