@@ -3,3 +3,5 @@ __pycache__/
 my-run/
 my-walkthrough/
 response.json
+/media/review-*.jpg
+/media/.render-*/
