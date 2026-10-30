@@ -2,8 +2,8 @@
   "date": "2026-10-30",
   "provider": "Local Kokoro inference",
   "generation_method": "One new local synthesis using a stock preset; PCM WAV exported to MP3",
-  "voice": "am_michael",
-  "voice_description": "American English male preset",
+  "voice": "af_heart",
+  "voice_description": "American English female preset",
   "model": "Kokoro-82M v1.0 (ONNX)",
   "ai_generated_voice": true,
   "settings": {
@@ -38,11 +38,11 @@
   "input": "Council Lab helps you think through a decision with Codex. You bring the question and the evidence. A Champion builds the case. A Skeptic challenges it. An Elder weighs both and suggests a next step. You move responses between fresh chats; the lab checks and saves the record. The final call stays with you.",
   "input_sha256": "e0252654d3320b6fb5350df5aa5550bb160bc55b5796a2ca6bc18df50b177e1a",
   "source": "narration-original.mp3",
-  "source_sha256": "0bc9f107e0f2d2bec78e32277bed340afc48423aa0dfa2e5e7fa74631197c1ff",
-  "source_duration_seconds": 21.321375,
+  "source_sha256": "329ccd23e7b5b25e8b6c715f49f41c8c88678ed2991a5afbf9744762285cf68e",
+  "source_duration_seconds": 19.6146875,
   "source_sample_rate": 24000,
   "source_channels": 1,
-  "original_pcm_sha256": "40502271f006c71bac0b977e817b572c8bbf5c87412065ddf73c150005cf4700",
+  "original_pcm_sha256": "780b4b1e5e90d5f4b1b765dd2310a43f5b7dd694759435d5cbbc6dbba1ee2515",
   "film_start_seconds": 0.65,
   "finishing": "MP3 source export, two-pass loudness normalization, 0.65-second lead, tail silence, AAC encoding. No post-generation speed change or speech truncation."
 }

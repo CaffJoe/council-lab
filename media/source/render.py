@@ -271,11 +271,31 @@ def render(ffmpeg):
                 process.wait()
 
 
+def preview_gif(ffmpeg):
+    """Export the film's pictures as a small, silent animated image."""
+    filters = (
+        "[0:v]fps=10,scale=960:-1:flags=lanczos,split[s0][s1];"
+        "[s0]palettegen=max_colors=256:stats_mode=diff[p];"
+        "[s1][p]paletteuse=dither=none"
+    )
+    with tempfile.TemporaryDirectory(prefix=".render-", dir=MEDIA) as folder:
+        target = Path(folder) / "preview.gif"
+        subprocess.run([
+            ffmpeg, "-y", "-v", "error", "-i", str(MEDIA / EDIT["movie"]),
+            "-filter_complex", filters, "-an", "-loop", "0", str(target),
+        ], check=True)
+        os.replace(target, MEDIA / "council-lab-preview.gif")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--ffmpeg")
     parser.add_argument("--stills-only", action="store_true")
+    parser.add_argument("--preview-gif", action="store_true",
+                        help="Also render a silent looping GIF for the README")
     args = parser.parse_args()
+    if args.stills_only and args.preview_gif:
+        parser.error("--preview-gif requires rendering the film; omit --stills-only")
     stills()
     if not args.stills_only:
         ffmpeg = args.ffmpeg or shutil.which("ffmpeg")
@@ -283,6 +303,8 @@ def main():
             import imageio_ffmpeg
             ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
         render(ffmpeg)
+        if args.preview_gif:
+            preview_gif(ffmpeg)
 
 
 if __name__ == "__main__":
