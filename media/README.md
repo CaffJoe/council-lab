@@ -1,31 +1,31 @@
-# Council Lab: one question, three angles
+# Council Lab: think through a decision
 
 [Watch the 24-second film](https://github.com/user-attachments/assets/03b54ea1-a928-4901-b60c-4f5b30677313) or [download the MP4](council-lab-24s.mp4).
 
-This is an editorial animation of the [recorded live Codex example](../examples/recorded-live/README.md). The supporting claim, challenge, eight dispositions, outcome and next-step excerpt come from the actual saved JSON records. They are typeset for the film, rather than shown in a screen recording. The library question and its evidence are fictional. Viewing the film runs no model.
+This short explainer introduces Council Lab's purpose and supervised workflow: bring a question and evidence, examine a supporting case and challenge, consider a judgment, and choose the next step. The graphics include actual saved output from the [recorded live Codex example](../examples/recorded-live/README.md). Its library case is fictional. Viewing the film runs no model.
 
 ## Spoken script
 
-> Should a library try a quiet hour? Council Lab keeps the evidence visible while a supporting case meets a challenge. This saved Codex run addresses all eight claims. The outcome is more observation: check demand, access, and existing help. The case is fictional. A person chooses what happens next.
+> Council Lab helps you think through a decision with Codex. You bring the question and the evidence. A Champion builds the case. A Skeptic challenges it. An Elder weighs both and suggests a next step. You move responses between fresh chats; the lab checks and saves the record. The final call stays with you.
 
-The voiceover is AI-generated with ElevenLabs, using Alice – Gentle Storyteller and Eleven Multilingual v2. A new take was made for this film. It is the only soundtrack: there is no music, subtitle track or promotional footer. The original source export is [audio/narration-original.mp3](audio/narration-original.mp3). Production settings and the source fingerprint are in [audio/provenance.json](audio/provenance.json).
+The AI-generated voiceover uses [Kokoro-82M v1.0](https://huggingface.co/hexgrad/Kokoro-82M), with the `am_michael` American English male [preset](https://huggingface.co/hexgrad/Kokoro-82M/blob/main/VOICES.md). This replacement take was generated locally at normal speed using [kokoro-onnx](https://github.com/thewh1teagle/kokoro-onnx). It is the only soundtrack: there is no music, subtitle track or promotional footer. The MP3 source export is [audio/narration-original.mp3](audio/narration-original.mp3). Production settings, model fingerprints and the source fingerprint are in [audio/provenance.json](audio/provenance.json).
 
 ## Editorial sequence
 
 | Film time | Picture |
 | --- | --- |
-| 0–3.4 seconds | The quiet-hour question and the fictional evidence tallies: 12 requests for quieter space and 20 people helped, over the same four Tuesdays. The counts do not rank competing needs. |
-| 3.4–6.9 seconds | Verbatim `champion-1` statement with its E1 reference. |
-| 6.9–9.45 seconds | Verbatim `skeptic-1` statement challenging what those requests establish. |
-| 9.45–12.2 seconds | All eight saved claim IDs and their actual dispositions. “Supported” is the recorded judgment, not independent proof that a claim is true. |
-| 12.2–17.6 seconds | The saved `more_observation` outcome. Demand, access and existing help summarize checks in the saved next step. |
-| 17.6–24 seconds | The person keeps the decision, beside a verbatim excerpt from the saved next step. |
+| 0–6.65 seconds | “Think it through.” The operator supplies the question and evidence. |
+| 6.65–8.8 seconds | Champion: build the case, beside the verbatim `champion-1` statement and E1 reference. |
+| 8.8–10.85 seconds | Skeptic: challenge the case, beside the verbatim `skeptic-1` statement. |
+| 10.85–14.3 seconds | Elder: weigh both and suggest a next step. The saved example chose `more_observation`. |
+| 14.3–19.7 seconds | The operator moves responses between fresh Codex chats; the lab checks and saves the record. |
+| 19.7–24 seconds | “You decide,” beside a verbatim excerpt from the saved next step. |
 
 This example does not establish that the workflow improves decisions. The [recorded-example notes](../examples/recorded-live/README.md) retain the execution date, prompt-wrapper boundary, saved responses and validation results.
 
 ## Reproduction
 
-The optional [renderer](source/render.py) draws the typography, output excerpts and animated highlights directly from the saved records. The [edit](source/edit.json) contains the spoken script, timing and excerpt. The [design reference](source/design.json) adapts Yrael System Lab's warm paper, charcoal, slate and restrained typography. Excerpts sit openly on the canvas, with no card borders or shadows. Segoe UI is used for body and display lettering, Georgia only for the wordmark, and Consolas for identifiers; font files are not redistributed. There are no generated illustration assets. The renderer can use DejaVu fonts on Linux, with different metrics.
+The optional [renderer](source/render.py) draws the explanatory typography and typesets output excerpts directly from the saved records. The [edit](source/edit.json) contains the spoken script, timing and excerpt. The [design reference](source/design.json) adapts Yrael System Lab's warm paper, charcoal, slate and restrained typography. Excerpts sit openly on the canvas, with no card borders or shadows. Segoe UI is used for body and display lettering, Georgia only for the wordmark, and Consolas for identifiers; font files are not redistributed. There are no generated illustration assets. The renderer can use DejaVu fonts on Linux, with different metrics.
 
 The application retains its standard-library-only setup. Re-rendering this media uses Python 3.13 and two optional packages:
 

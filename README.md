@@ -10,7 +10,7 @@ https://github.com/user-attachments/assets/03b54ea1-a928-4901-b60c-4f5b30677313
 
 **24 seconds · Sound on for narration.** [Transcript](media/README.md) · [Download MP4](media/council-lab-24s.mp4)
 
-An editorial animation of actual saved Codex responses to a **fictional library case**. The narration is AI-generated; this is an animation of the records, rather than a screen recording.
+A high-level introduction to the workflow, illustrated with actual saved Codex responses to a **fictional library case**. The narration is AI-generated; the graphics animate the records rather than show a screen recording.
 
 ## Quick start
 

@@ -22,7 +22,6 @@ SLATE = DESIGN["colors"]["slate"]
 MUTED = DESIGN["colors"]["muted"]
 RULE = DESIGN["colors"]["rule"]
 GOLD = DESIGN["colors"]["gold"]
-GREEN = DESIGN["colors"]["done_foreground"]
 PALE_SLATE = DESIGN["colors"]["slate_surface"]
 
 
@@ -32,8 +31,6 @@ def record(role):
 
 
 CHAMPION, SKEPTIC, ELDER = (record(role) for role in ("champion", "skeptic", "elder"))
-CLAIMS = CHAMPION["claims"] + SKEPTIC["claims"]
-RESOLUTIONS = {item["claim_id"]: item for item in ELDER["resolutions"]}
 
 
 def ease(value):
@@ -89,7 +86,7 @@ def base(dark=False):
         x = 72 + index * 10
         draw.rectangle((x, 67 - height, x + 5, 67), fill=GOLD)
     text(draw, (116, 36), "Council Lab", 26, color, "serif")
-    text(draw, (673, 46), "SAVED CODEX OUTPUT  /  FICTIONAL CASE", 16,
+    text(draw, (673, 46), "WORKFLOW EXPLAINER / FICTIONAL CASE", 16,
          RULE if dark else MUTED, "mono")
     draw.line((72, 91, 1208, 91), fill="#394752" if dark else RULE, width=1)
     return canvas, draw
@@ -113,22 +110,18 @@ def question(local):
     canvas, draw = base()
     p = ease(local / 0.85)
     x = round(72 - 40 * (1 - p))
-    text(draw, (x, 147), "A quieter", 79, kind="display")
-    text(draw, (x, 244), "hour?", 91, SLATE, "display")
-    text(draw, (76, 411), "One question.", 29)
-    text(draw, (76, 453), "More than one angle.", 29)
+    text(draw, (x, 147), "Think it", 79, kind="display")
+    text(draw, (x, 244), "through.", 91, SLATE, "display")
+    text(draw, (76, 411), "Your question. Your evidence.", 29)
+    text(draw, (76, 463), "WITH CODEX", 19, MUTED, "mono")
     x, y = 659, round(162 + 35 * (1 - p))
-    text(draw, (x, y), "THE SUPPLIED EVIDENCE", 18, MUTED, "mono")
-    for row, (number, label, source) in enumerate((
-        ("12", "requests for quieter space", "E1"),
-        ("20", "people helped at the desk", "E2"),
-    )):
-        top = y + 65 + row * 145
-        draw.line((x, top, 1208, top), fill=RULE)
-        text(draw, (x, top + 9), number, 76, SLATE, "display")
-        text(draw, (x + 139, top + 28), label, 24)
-        source_label(draw, x + 125, top + 70, source)
-    text(draw, (x, y + 363), "Same four Tuesdays. Fictional tallies.", 19, MUTED)
+    text(draw, (x, y), "YOU BRING THE INPUT", 18, MUTED, "mono")
+    text(draw, (x, y + 65), "Question", 37, SLATE, "display")
+    text(draw, (x, y + 119), "What should we do next?", 27)
+    draw.line((x, y + 180, 1208, y + 180), fill=RULE)
+    text(draw, (x, y + 212), "Evidence", 37, SLATE, "display")
+    text(draw, (x, y + 266), "What do we know?", 27)
+    text(draw, (x, y + 363), "Example: a library considers a quiet hour.", 19, MUTED)
     return canvas
 
 
@@ -139,8 +132,8 @@ def argument(local, challenge=False):
     claim = (SKEPTIC if challenge else CHAMPION)["claims"][0]
     color = INK if challenge else SLATE
     text(draw, (72, 147), "02" if challenge else "01", 19, color, "mono")
-    text(draw, (72, 209), "Then" if challenge else "Make", 75, kind="display")
-    text(draw, (72, 296), "challenge it." if challenge else "a case.", 66, color, "display")
+    text(draw, (72, 209), "Challenge" if challenge else "Build", 75, kind="display")
+    text(draw, (72, 296), "the case.", 66, color, "display")
     text(draw, (76, 454), "SKEPTIC" if challenge else "CHAMPION", 19, MUTED, "mono")
     draw.line((76, 500, 505, 500), fill=RULE, width=2)
     end = round(76 + 429 * ease((local - 0.25) / 0.8))
@@ -153,51 +146,45 @@ def argument(local, challenge=False):
 def judgment(local):
     canvas, draw = base()
     text(draw, (72, 143), "03  /  ELDER", 19, SLATE, "mono")
-    text(draw, (72, 206), "Every claim,", 73, kind="display")
-    text(draw, (72, 291), "accounted for.", 66, SLATE, "display")
-    text(draw, (76, 441), "8 CLAIMS  /  8 RESOLUTIONS", 19, MUTED, "mono")
-    # Each row is backed by the saved elder record, including its actual disposition.
-    for index, claim in enumerate(CLAIMS):
-        x, y = 672, 142 + 61 * index
-        progress = ease((local - index * 0.13) / 0.45)
-        draw.line((x, y + 50, 1208, y + 50), fill=RULE)
-        text(draw, (x, y + 9), claim["id"], 23, INK, "mono")
-        if progress > 0:
-            end = round(x + 536 * progress)
-            draw.line((x, y + 50, end, y + 50), fill=GREEN, width=2)
-            if progress > 0.7:
-                source_label(draw, x + 337, y + 4, RESOLUTIONS[claim["id"]]["disposition"], GREEN)
+    text(draw, (72, 206), "Weigh", 85, kind="display")
+    text(draw, (72, 302), "both.", 94, SLATE, "display")
+    text(draw, (76, 462), "Find a next step.", 29)
+    x = round(672 + 45 * (1 - ease(local / 0.65)))
+    text(draw, (x, 174), "elder.json", 19, MUTED, "mono")
+    draw.line((x, 226, 1208, 226), fill=RULE)
+    text(draw, (x, 258), "THE SAVED JUDGMENT", 18, MUTED, "mono")
+    text(draw, (x, 312), "More", 61, kind="display")
+    text(draw, (x, 386), "observation.", 61, SLATE, "display")
+    source_label(draw, x - 14, 484, ELDER["outcome"])
     return canvas
 
 
-def outcome(local):
+def saved_record(local):
     canvas, draw = base()
-    text(draw, (72, 143), "THE SAVED JUDGMENT", 19, SLATE, "mono")
-    text(draw, (72, 205), "More", 85, kind="display")
-    text(draw, (72, 302), "observation.", 75, SLATE, "display")
-    source_label(draw, 62, 440, ELDER["outcome"])
+    text(draw, (72, 143), "THE LAB CHECKS AND SAVES", 19, SLATE, "mono")
+    text(draw, (72, 205), "Keep the", 75, kind="display")
+    text(draw, (72, 294), "reasoning.", 75, SLATE, "display")
+    paragraph(draw, (76, 439), "You move responses between fresh Codex chats.", 475, 29)
     x = round(647 + 45 * (1 - ease(local / 0.65)))
-    text(draw, (x, 158), "BEFORE A TRIAL", 19, MUTED, "mono")
-    for index, (heading, field) in enumerate((
-        ("Demand", "preferred times"),
-        ("Access", "access needs"),
-        ("Existing help", "assistance"),
+    text(draw, (x, 158), "A RECORD YOU CAN INSPECT", 19, MUTED, "mono")
+    for index, heading in enumerate((
+        "Question + evidence",
+        "Case + challenge",
+        "Judgment + next step",
     )):
-        if field not in ELDER["next_step"]:
-            raise ValueError("Judgment summary no longer matches the saved next step")
         y = 230 + index * 110
         draw.line((x, y + 82, 1208, y + 82), fill=RULE)
         text(draw, (x, y), "0" + str(index + 1), 20, SLATE, "mono")
-        text(draw, (x + 72, y - 8), heading, 40, kind="display")
+        text(draw, (x + 72, y - 8), heading, 34, kind="display")
     return canvas
 
 
 def human(local):
     canvas, draw = base(dark=True)
     p = ease(local / 0.8)
-    text(draw, (72, round(171 + 22 * (1 - p))), "A person", 85, PAPER, "display")
-    text(draw, (72, round(272 + 22 * (1 - p))), "chooses.", 98, PALE_SLATE, "display")
-    text(draw, (78, 480), "The next step stays human.", 28, PAPER)
+    text(draw, (72, round(171 + 22 * (1 - p))), "You", 85, PAPER, "display")
+    text(draw, (72, round(272 + 22 * (1 - p))), "decide.", 98, PALE_SLATE, "display")
+    text(draw, (78, 480), "The final call stays with you.", 28, PAPER)
     # The source is a visible next_step excerpt, not a second narration track.
     x = 735
     text(draw, (x, 177), "elder.json", 18, RULE, "mono")
@@ -210,7 +197,7 @@ def human(local):
     return canvas
 
 
-SCENES = (question, argument, lambda t: argument(t, True), judgment, outcome, human)
+SCENES = (question, argument, lambda t: argument(t, True), judgment, saved_record, human)
 
 
 def frame(time):
@@ -222,15 +209,15 @@ def frame(time):
 
 def stills():
     canvas, draw = base()
-    text(draw, (72, 149), "One question.", 74, kind="display")
-    text(draw, (72, 239), "Three angles.", 73, SLATE, "display")
-    text(draw, (78, 409), "Evidence. Challenge. Judgment.", 26)
-    text(draw, (78, 456), "A narrated look at saved Codex output.", 23, MUTED)
+    text(draw, (72, 149), "Think it", 79, kind="display")
+    text(draw, (72, 244), "through.", 91, SLATE, "display")
+    text(draw, (78, 409), "One question. Three angles.", 28)
+    text(draw, (78, 456), "A short guide to Council Lab.", 25, MUTED)
     record_excerpt(canvas, 620, 170, "champion", CHAMPION["claims"][0]["id"],
              CHAMPION["claims"][0]["statement"], ["E1"])
     canvas.save(MEDIA / "council-lab-poster.jpg", quality=94, subsampling=0)
     sheet = Image.new("RGB", (WIDTH * 3, HEIGHT), PAPER)
-    for index, time in enumerate((4.8, 7.8, 14.5)):
+    for index, time in enumerate(EDIT["storyboard_keyframes"]):
         sheet.paste(frame(time), (WIDTH * index, 0))
     sheet.resize((1920, 360), Image.Resampling.LANCZOS).save(
         MEDIA / "council-lab-storyboard.jpg", quality=92, subsampling=0)

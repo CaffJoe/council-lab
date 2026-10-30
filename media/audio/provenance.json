@@ -1,24 +1,48 @@
 {
-  "date": "2026-10-29",
-  "provider": "ElevenLabs",
-  "generation_method": "Signed-in Text to Speech web app; one new take for this film",
-  "voice": "Alice - Gentle Storyteller",
-  "model": "Eleven Multilingual v2",
+  "date": "2026-10-30",
+  "provider": "Local Kokoro inference",
+  "generation_method": "One new local synthesis using a stock preset; PCM WAV exported to MP3",
+  "voice": "am_michael",
+  "voice_description": "American English male preset",
+  "model": "Kokoro-82M v1.0 (ONNX)",
   "ai_generated_voice": true,
-  "settings_observed_before_generation": {
-    "speed": 1.05,
-    "stability": 0.5,
-    "similarity": 0.75,
-    "style_exaggeration": 0,
-    "speaker_boost": true
+  "settings": {
+    "language": "en-us",
+    "speed": 1.0
   },
-  "input": "Should a library try a quiet hour? Council Lab keeps the evidence visible while a supporting case meets a challenge. This saved Codex run addresses all eight claims. The outcome is more observation: check demand, access, and existing help. The case is fictional. A person chooses what happens next.",
-  "input_sha256": "d716bce1c45840356f4330f2ba7780e7762c7582d6f00fc19f2d064f2167953f",
+  "software": {
+    "kokoro-onnx": "0.6.1",
+    "onnxruntime": "1.31.1",
+    "soundfile": "0.13.1",
+    "phonemizer": "3.4.0",
+    "espeakng-loader": "0.2.4"
+  },
+  "model_reference": "https://huggingface.co/hexgrad/Kokoro-82M",
+  "preset_reference": "https://huggingface.co/hexgrad/Kokoro-82M/blob/main/VOICES.md",
+  "model_files": [
+    {
+      "file": "kokoro-v1.0.onnx",
+      "url": "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.1/kokoro-v1.0.onnx",
+      "bytes": 325505369,
+      "sha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+      "release_digest": "sha256:beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a"
+    },
+    {
+      "file": "voices-v1.0.bin",
+      "url": "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.1/voices-v1.0.bin",
+      "bytes": 28214398,
+      "sha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+      "release_digest": "sha256:bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d"
+    }
+  ],
+  "input": "Council Lab helps you think through a decision with Codex. You bring the question and the evidence. A Champion builds the case. A Skeptic challenges it. An Elder weighs both and suggests a next step. You move responses between fresh chats; the lab checks and saves the record. The final call stays with you.",
+  "input_sha256": "e0252654d3320b6fb5350df5aa5550bb160bc55b5796a2ca6bc18df50b177e1a",
   "source": "narration-original.mp3",
-  "source_sha256": "f77d5edd99427e20d5a6e54280b60e7355455657ba590ae072da02f88ba8fd65",
-  "source_duration_seconds": 20.9240625,
-  "source_sample_rate": 44100,
+  "source_sha256": "0bc9f107e0f2d2bec78e32277bed340afc48423aa0dfa2e5e7fa74631197c1ff",
+  "source_duration_seconds": 21.321375,
+  "source_sample_rate": 24000,
   "source_channels": 1,
+  "original_pcm_sha256": "40502271f006c71bac0b977e817b572c8bbf5c87412065ddf73c150005cf4700",
   "film_start_seconds": 0.65,
-  "finishing": "Two-pass loudness normalization, 0.65-second lead, tail silence, AAC encoding. No speed change or speech truncation."
+  "finishing": "MP3 source export, two-pass loudness normalization, 0.65-second lead, tail silence, AAC encoding. No post-generation speed change or speech truncation."
 }

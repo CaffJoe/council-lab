@@ -1,17 +1,18 @@
 {
-  "title": "Council Lab: one question, three angles",
+  "title": "Council Lab: think through a decision",
   "movie": "council-lab-24s.mp4",
   "duration_seconds": 24,
   "narration_start_seconds": 0.65,
-  "narration": "Should a library try a quiet hour? Council Lab keeps the evidence visible while a supporting case meets a challenge. This saved Codex run addresses all eight claims. The outcome is more observation: check demand, access, and existing help. The case is fictional. A person chooses what happens next.",
+  "narration": "Council Lab helps you think through a decision with Codex. You bring the question and the evidence. A Champion builds the case. A Skeptic challenges it. An Elder weighs both and suggests a next step. You move responses between fresh chats; the lab checks and saves the record. The final call stays with you.",
   "next_step_excerpt": "check prospective users' preferred times and access needs, inspect room suitability",
   "cuts": [
-    {"start": 0, "end": 3.4, "scene": "question"},
-    {"start": 3.4, "end": 6.9, "scene": "champion"},
-    {"start": 6.9, "end": 9.45, "scene": "skeptic"},
-    {"start": 9.45, "end": 12.2, "scene": "claim_accounting"},
-    {"start": 12.2, "end": 17.6, "scene": "more_observation"},
-    {"start": 17.6, "end": 24, "scene": "human_next_step"}
+    {"start": 0, "end": 6.65, "scene": "question"},
+    {"start": 6.65, "end": 8.8, "scene": "champion"},
+    {"start": 8.8, "end": 10.85, "scene": "skeptic"},
+    {"start": 10.85, "end": 14.3, "scene": "judgment"},
+    {"start": 14.3, "end": 19.7, "scene": "saved_record"},
+    {"start": 19.7, "end": 24, "scene": "human_next_step"}
   ],
-  "review_keyframes": [0.8, 3.3, 4.8, 6.8, 7.8, 10.8, 14.5, 18.8, 23.9]
+  "review_keyframes": [0.8, 6.6, 7.7, 8.75, 9.8, 12.4, 16.8, 20.8, 23.9],
+  "storyboard_keyframes": [7.7, 9.8, 12.4]
 }
