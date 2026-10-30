@@ -101,3 +101,5 @@ python -m unittest discover -s tests -v
 ```
 
 The optional media renderer has its own [production notes and dependencies](../media/README.md#reproduction). They are separate from running Council Lab.
+
+CI runs Python 3.9 and 3.13 on Windows and Ubuntu. Linux uses Ubuntu 24.04 to retain the Python 3.9 builds supplied by GitHub Actions.
