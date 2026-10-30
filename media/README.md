@@ -25,7 +25,7 @@ This example does not establish that the workflow improves decisions. The [recor
 
 ## Animated preview
 
-The README also includes a [silent animated preview](council-lab-preview.gif), using the film's pictures at 960×540 and 10 fps. It replaces the static storyboard so readers have an inline motion preview when their GitHub app does not display the video player. It has no audio; tap the preview or **Watch with narration** to open the full film. The bare attachment URL retains the native player on GitHub's web README.
+The README also includes a [silent animated preview](council-lab-preview.gif), using the film's pictures at 960×540 and 10 fps. It replaces the static storyboard with an inline visual summary. It has no audio; choose **Watch with narration** to open the full film. The bare attachment URL retains the native player on GitHub's web README. The GIF is separate from that video link because GitHub otherwise replaces the linked image with another video player.
 
 Mobile-app rendering has not been verified on a device. Reports of [different video behavior in GitHub mobile](https://github.com/orgs/community/discussions/188443) corroborate the reported limitation; web player markup alone does not verify app playback.
 

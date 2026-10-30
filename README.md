@@ -40,7 +40,7 @@ A library is considering a quiet hour. Some visitors want a quieter place to stu
 | **Skeptic** | Challenge that case and identify what the evidence leaves unresolved. |
 | **Elder** | Address every claim, name the uncertainty, and suggest a human next step. |
 
-[![Animated preview of the question, three roles, saved record, and human next step.](https://github.com/user-attachments/assets/7f70ac23-3320-44aa-8dc7-1e8238cf79e3)](https://github.com/user-attachments/assets/267d38c0-75c8-4569-b96b-7e73aa14832b)
+![Animated preview of the question, three roles, saved record, and human next step.](https://github.com/user-attachments/assets/7f70ac23-3320-44aa-8dc7-1e8238cf79e3)
 
 *Animated preview · Silent.* [Watch with narration](https://github.com/user-attachments/assets/267d38c0-75c8-4569-b96b-7e73aa14832b).
 
