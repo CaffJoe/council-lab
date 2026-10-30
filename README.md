@@ -8,7 +8,7 @@ A hands-on Codex lab for examining evidence, challenging an argument, and choosi
 
 https://github.com/user-attachments/assets/a07e0353-ddbc-42cd-9edc-abfbded9f765
 
-**24 seconds · Sound on for narration.** [Transcript](media/README.md) · [Download MP4](media/council-lab-24s.mp4)
+**24 seconds · [Watch with narration](https://github.com/user-attachments/assets/a07e0353-ddbc-42cd-9edc-abfbded9f765).** [Transcript](media/README.md) · [Download MP4](media/council-lab-24s.mp4)
 
 A high-level introduction to the workflow, illustrated with actual saved Codex responses to a **fictional library case**. The narration is AI-generated; the graphics animate the records rather than show a screen recording.
 
@@ -40,7 +40,9 @@ A library is considering a quiet hour. Some visitors want a quieter place to stu
 | **Skeptic** | Challenge that case and identify what the evidence leaves unresolved. |
 | **Elder** | Address every claim, name the uncertainty, and suggest a human next step. |
 
-![Saved supporting claim, skeptical challenge, and judgment to gather more observations.](media/council-lab-storyboard.jpg)
+[![Animated preview of the question, three roles, saved record, and human next step.](https://raw.githubusercontent.com/CaffJoe/council-lab/main/media/council-lab-preview.gif)](https://github.com/user-attachments/assets/a07e0353-ddbc-42cd-9edc-abfbded9f765)
+
+*Animated preview · Silent.* [Watch with narration](https://github.com/user-attachments/assets/a07e0353-ddbc-42cd-9edc-abfbded9f765).
 
 Each response is bound to its input packet. Citation IDs and claim accounting are checked before a response is accepted. You review the reasoning and choose what happens next.
 
