@@ -1,6 +1,6 @@
 # Council Lab: think through a decision
 
-[Watch the 24-second film](https://github.com/user-attachments/assets/03b54ea1-a928-4901-b60c-4f5b30677313) or [download the MP4](council-lab-24s.mp4).
+[Watch the 24-second film](https://github.com/user-attachments/assets/a07e0353-ddbc-42cd-9edc-abfbded9f765) or [download the MP4](council-lab-24s.mp4).
 
 This short explainer introduces Council Lab's purpose and supervised workflow: bring a question and evidence, examine a supporting case and challenge, consider a judgment, and choose the next step. The graphics include actual saved output from the [recorded live Codex example](../examples/recorded-live/README.md). Its library case is fictional. Viewing the film runs no model.
 

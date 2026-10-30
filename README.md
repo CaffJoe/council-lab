@@ -6,7 +6,7 @@ A hands-on Codex lab for examining evidence, challenging an argument, and choosi
 
 ## Watch the 24-second overview
 
-https://github.com/user-attachments/assets/03b54ea1-a928-4901-b60c-4f5b30677313
+https://github.com/user-attachments/assets/a07e0353-ddbc-42cd-9edc-abfbded9f765
 
 **24 seconds · Sound on for narration.** [Transcript](media/README.md) · [Download MP4](media/council-lab-24s.mp4)
 
