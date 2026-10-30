@@ -1,60 +1,69 @@
 # Council Lab
 
-[![Council Lab: one question, three angles. A narrated editorial film using saved Codex output.](media/council-lab-poster.jpg)](#watch-the-24-second-overview)
+A hands-on Codex lab for examining evidence, challenging an argument, and choosing a human next step.
 
-A library is thinking about setting aside a quiet hour. Some visitors have asked for a quieter place to study, but others need help at the service desk. What should the library try first?
-
-Council Lab lets you examine a small question like this from more than one angle. It keeps the supplied evidence visible, asks for a case in favor and a challenge to it, then asks for a judgment that accounts for each claim. The judgment ends with uncertainty and a next step for a person to consider. It does not make the decision or take action.
+[Quick start](#quick-start) · [Recorded example](#recorded-live-example) · [Guide](docs/guide.md) · [MIT license](LICENSE)
 
 ## Watch the 24-second overview
 
 https://github.com/user-attachments/assets/03b54ea1-a928-4901-b60c-4f5b30677313
 
-[Play or download the narrated MP4](media/council-lab-24s.mp4).
+**24 seconds · Sound on for narration.** [Transcript](media/README.md) · [Download MP4](media/council-lab-24s.mp4)
 
-A narrated editorial animation of the [saved live Codex example](examples/recorded-live/README.md), using verbatim output excerpts and claim-by-claim highlights. The library case and evidence are fictional. The film typesets saved records; it is not a screen recording or a fresh execution. The voiceover is AI-generated. Read the [spoken script and production notes](media/README.md).
+An editorial animation of actual saved Codex responses to a **fictional library case**. The narration is AI-generated; this is an animation of the records, rather than a screen recording.
 
-## Try the fictional example
+## Quick start
 
-You need Python 3.9 or later. No packages, account, network connection, or API key are needed for the walkthrough. Open a terminal in this folder:
+Requires **Python 3.9+**. Clone with Git, or [download the repository](https://github.com/CaffJoe/council-lab/archive/refs/heads/main.zip).
 
-```text
+```sh
+git clone https://github.com/CaffJoe/council-lab.git
+cd council-lab
 python walkthrough.py my-walkthrough
 ```
 
-This is a **scripted walkthrough**. Its evidence and responses were written for the example; no model is called. The output includes the evidence, arguments, judgment, and suggested next step. Review it again with `python lab.py show my-walkthrough`. Choose a new directory name each time.
+This **scripted walkthrough** runs locally, with no packages, model call, account, or API key. It creates a complete example you can inspect:
 
-The point is not to prove that a quiet hour will help. The tally suggests a question worth looking into; it does not measure demand, accessibility, or what would happen to other services. The suggested next step is a small check a librarian could choose to make.
+```sh
+python lab.py show my-walkthrough
+```
 
-## Inspect the recorded live example
+Use a new directory name each time. To work through your own question with fresh Codex responses, follow the [guide](docs/guide.md#use-your-own-question).
 
-Three fresh Codex runs also examined this fictional case. You can [read the saved responses and test notes](examples/recorded-live/README.md), or inspect the complete record:
+## How it works
 
-```text
+A library is considering a quiet hour. Some visitors want a quieter place to study; others need help at the service desk. Each role examines the same supplied evidence:
+
+| Role | Job |
+| --- | --- |
+| **Champion** | Make a supporting case, citing the evidence and stating the inference. |
+| **Skeptic** | Challenge that case and identify what the evidence leaves unresolved. |
+| **Elder** | Address every claim, name the uncertainty, and suggest a human next step. |
+
+![Saved supporting claim, skeptical challenge, and judgment to gather more observations.](media/council-lab-storyboard.jpg)
+
+Each response is bound to its input packet. Citation IDs and claim accounting are checked before a response is accepted. You review the reasoning and choose what happens next.
+
+## Recorded live example
+
+Three fresh Codex runs examined the fictional case on **October 29, 2026**. The saved judgment addressed all eight claims and chose **more observation**: check demand, access, room suitability, and existing assistance before a trial.
+
+[Read the supporting case, challenge, judgment, and provenance](examples/recorded-live/README.md), or inspect the complete record:
+
+```sh
 python lab.py show examples/recorded-live/run
 ```
 
-This is a **recorded live example**, saved on October 29, 2026. Viewing it does not run a model. The supporting case, challenge, and judgment passed the same validation used for manual responses. The judgment addressed all eight claims, identified ambiguity about what a quiet hour would mean, and suggested checking demand, access, and existing services before scheduling a trial. One example does not establish that the approach improves decisions.
+Viewing this recording starts no model. It demonstrates this one workflow; it does not establish improved decision quality.
 
-## Change the question and try it with Codex
+## Go further
 
-The editable case is [examples/library.json](examples/library.json). Copy it to a new JSON file and change the question, aim, evidence, sources, and unknowns. Keep the same field names and unique evidence IDs. Use fictional or material you are authorized to share; a prompt contains the entire case. If you change the example, start a new run rather than using the scripted responses.
+- [Use your own question with Codex](docs/guide.md#use-your-own-question)
+- [Understand validation and its limits](docs/guide.md#what-validation-checks)
+- [Inspect the recorded execution](examples/recorded-live/README.md)
+- [Read the film script and production notes](media/README.md)
+- [Run the checks](docs/guide.md#development)
 
-1. Create a run in a **new** directory: `python lab.py start my-case.json my-run`.
-2. Inspect it: `python lab.py show my-run`.
-3. Print the first prompt: `python lab.py prompt my-run champion`. Copy it into a **fresh Codex chat** and ask for the JSON response. Save the response, without code fences, as a UTF-8 file such as `response.json`.
-4. Admit it: `python lab.py submit my-run champion response.json`. If validation fails, correct the response against the printed packet and submit again.
-5. Repeat the prompt and submit commands for `skeptic`, using a **fresh chat**, then for `elder`, again using a fresh chat. The skeptic packet includes the accepted supporting case; the elder packet includes both cases.
-6. Run `python lab.py show my-run`. Read the evidence and reasoning, decide whether the uncertainty matters, and choose your own next step.
+Council Lab is a supervised learning example. You supply responses from fresh Codex chats; the program validates and saves them. Reasoning quality, source support, and the final decision require human review. See the [guide](docs/guide.md#boundaries) and [source notes](SOURCE.md) for the full boundary.
 
-The commands read and write UTF-8 text, including when output is redirected to a file. They do not start Codex or verify which model produced a response. They accept operator-supplied JSON only. You can also write responses yourself. The validator checks the structure, packet binding, evidence IDs, and claim accounting; it cannot establish whether a citation actually supports a claim or whether reasoning is sound. Review those yourself. The `inference` field is where a role explains the step beyond the source, not a source itself.
-
-## How the example works
-
-![Editorial frames of the actual saved supporting claim, skeptical challenge, and judgment to gather more observations.](media/council-lab-storyboard.jpg)
-
-The case is copied into the new run, and its content receives a fingerprint. Each role gets a packet for that exact case. The supporting role sees the case; the challenging role also sees the accepted supporting record; the judge sees both. A response must match the role and packet fingerprint. Evidence citations must refer to IDs in the case, and the judgment must address each claim once. Accepted response files are created once rather than overwritten by the commands. If you change an earlier input, later records no longer match; begin a new run to keep the old one readable.
-
-These are useful **workflow boundaries**, not a security sandbox or a durable audit system. A fresh chat and the prompt ask Codex to restrict its context, but the app does not enforce what Codex can access. The operator controls the local files and can edit them; fingerprints bind outputs to inputs but are not signatures or proof of authenticity. Treat case content as untrusted, check model responses, and use only data you are comfortable placing in the chosen chat. There is no workspace enrollment, background observer, scheduler, live evidence collection, experiment execution, or automatic action.
-
-See [SOURCE.md](SOURCE.md) for the source boundary and what this small edition omits. Council Lab is released under the [MIT license](LICENSE). Run checks with `python -m unittest discover -s tests -v`.
+[MIT](LICENSE) · [Test results](https://github.com/CaffJoe/council-lab/actions/workflows/tests.yml)
